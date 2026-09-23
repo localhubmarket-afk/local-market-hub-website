@@ -1,0 +1,206 @@
+@import "tailwindcss";
+
+@font-face {
+  font-family: 'OpenDyslexic';
+  src: url('https://cdn.jsdelivr.net/npm/open-dyslexic-fonts@0.0.1/OpenDyslexic-Regular.woff2') format('woff2'),
+       url('https://cdn.jsdelivr.net/npm/open-dyslexic-fonts@0.0.1/OpenDyslexic-Regular.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'OpenDyslexic';
+  src: url('https://cdn.jsdelivr.net/npm/open-dyslexic-fonts@0.0.1/OpenDyslexic-Bold.woff2') format('woff2'),
+       url('https://cdn.jsdelivr.net/npm/open-dyslexic-fonts@0.0.1/OpenDyslexic-Bold.woff') format('woff');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'OpenDyslexic';
+  src: url('https://cdn.jsdelivr.net/npm/open-dyslexic-fonts@0.0.1/OpenDyslexic-Italic.woff2') format('woff2'),
+       url('https://cdn.jsdelivr.net/npm/open-dyslexic-fonts@0.0.1/OpenDyslexic-Italic.woff') format('woff');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Open-Dyslexic';
+  src: url('https://cdn.jsdelivr.net/npm/open-dyslexic-fonts@0.0.1/OpenDyslexic-Regular.woff2') format('woff2'),
+       url('https://cdn.jsdelivr.net/npm/open-dyslexic-fonts@0.0.1/OpenDyslexic-Regular.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@layer base {
+  :root {
+    --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --font-display: 'Cabinet Grotesk', 'Plus Jakarta Sans', sans-serif;
+  }
+  
+  html {
+    font-family: var(--font-sans);
+    scroll-behavior: smooth;
+  }
+
+  /* High contrast accessibility override mode */
+  html.wcag-high-contrast {
+    filter: contrast(1.18);
+  }
+
+  html.wcag-large-text {
+    font-size: 112%;
+  }
+
+  /* =========================================================================
+     TARGETED CSS HIERARCHY: OpenDyslexic Font System (.wcag-open-dyslexic)
+     Applied directly to HTML root element and document body
+     ========================================================================= */
+
+  /* 1. Root & Document Body */
+  html.wcag-open-dyslexic,
+  body.wcag-open-dyslexic,
+  .wcag-open-dyslexic {
+    font-family: 'OpenDyslexic', 'Open-Dyslexic', 'Comic Sans MS', sans-serif !important;
+    letter-spacing: 0.02em;
+    word-spacing: 0.04em;
+    line-height: 1.6;
+  }
+
+  /* 2. Headlines & Display Headings */
+  .wcag-open-dyslexic h1,
+  .wcag-open-dyslexic h2,
+  .wcag-open-dyslexic h3,
+  .wcag-open-dyslexic h4,
+  .wcag-open-dyslexic h5,
+  .wcag-open-dyslexic h6,
+  .wcag-open-dyslexic [role="heading"],
+  html.wcag-open-dyslexic h1,
+  html.wcag-open-dyslexic h2,
+  html.wcag-open-dyslexic h3,
+  html.wcag-open-dyslexic h4,
+  html.wcag-open-dyslexic h5,
+  html.wcag-open-dyslexic h6,
+  body.wcag-open-dyslexic h1,
+  body.wcag-open-dyslexic h2,
+  body.wcag-open-dyslexic h3,
+  body.wcag-open-dyslexic h4,
+  body.wcag-open-dyslexic h5,
+  body.wcag-open-dyslexic h6 {
+    font-family: 'OpenDyslexic', 'Open-Dyslexic', 'Comic Sans MS', sans-serif !important;
+    letter-spacing: 0.02em;
+    line-height: 1.35;
+  }
+
+  /* 3. Text Inputs & Form Controls */
+  .wcag-open-dyslexic input,
+  .wcag-open-dyslexic textarea,
+  .wcag-open-dyslexic select,
+  .wcag-open-dyslexic input[type="text"],
+  .wcag-open-dyslexic input[type="search"],
+  .wcag-open-dyslexic input[type="email"],
+  .wcag-open-dyslexic input[type="tel"],
+  .wcag-open-dyslexic input[type="number"],
+  html.wcag-open-dyslexic input,
+  html.wcag-open-dyslexic textarea,
+  html.wcag-open-dyslexic select,
+  body.wcag-open-dyslexic input,
+  body.wcag-open-dyslexic textarea,
+  body.wcag-open-dyslexic select {
+    font-family: 'OpenDyslexic', 'Open-Dyslexic', 'Comic Sans MS', sans-serif !important;
+    letter-spacing: 0.02em;
+  }
+
+  /* 4. Buttons & Interactive Controls */
+  .wcag-open-dyslexic button,
+  .wcag-open-dyslexic [role="button"],
+  .wcag-open-dyslexic .btn,
+  html.wcag-open-dyslexic button,
+  html.wcag-open-dyslexic [role="button"],
+  body.wcag-open-dyslexic button,
+  body.wcag-open-dyslexic [role="button"] {
+    font-family: 'OpenDyslexic', 'Open-Dyslexic', 'Comic Sans MS', sans-serif !important;
+    letter-spacing: 0.02em;
+  }
+
+  /* 5. Navigation Elements */
+  .wcag-open-dyslexic nav,
+  .wcag-open-dyslexic nav a,
+  .wcag-open-dyslexic nav button,
+  .wcag-open-dyslexic nav span,
+  .wcag-open-dyslexic [role="navigation"],
+  .wcag-open-dyslexic [role="navigation"] a,
+  .wcag-open-dyslexic [role="navigation"] button,
+  .wcag-open-dyslexic header,
+  .wcag-open-dyslexic header a,
+  .wcag-open-dyslexic header button,
+  html.wcag-open-dyslexic nav,
+  html.wcag-open-dyslexic nav a,
+  html.wcag-open-dyslexic nav button,
+  html.wcag-open-dyslexic [role="navigation"],
+  body.wcag-open-dyslexic nav,
+  body.wcag-open-dyslexic nav a,
+  body.wcag-open-dyslexic nav button,
+  body.wcag-open-dyslexic [role="navigation"] {
+    font-family: 'OpenDyslexic', 'Open-Dyslexic', 'Comic Sans MS', sans-serif !important;
+    letter-spacing: 0.02em;
+  }
+
+  /* 6. Body text, labels, paragraphs, spans, lists, table elements */
+  .wcag-open-dyslexic p,
+  .wcag-open-dyslexic span,
+  .wcag-open-dyslexic a,
+  .wcag-open-dyslexic label,
+  .wcag-open-dyslexic li,
+  .wcag-open-dyslexic td,
+  .wcag-open-dyslexic th,
+  .wcag-open-dyslexic div,
+  html.wcag-open-dyslexic p,
+  html.wcag-open-dyslexic span,
+  html.wcag-open-dyslexic a,
+  html.wcag-open-dyslexic label,
+  html.wcag-open-dyslexic li,
+  html.wcag-open-dyslexic td,
+  html.wcag-open-dyslexic th,
+  body.wcag-open-dyslexic p,
+  body.wcag-open-dyslexic span,
+  body.wcag-open-dyslexic a,
+  body.wcag-open-dyslexic label,
+  body.wcag-open-dyslexic li,
+  body.wcag-open-dyslexic td,
+  body.wcag-open-dyslexic th {
+    font-family: 'OpenDyslexic', 'Open-Dyslexic', 'Comic Sans MS', sans-serif !important;
+  }
+
+  /* Backward compatibility for .wcag-opendyslexic */
+  html.wcag-opendyslexic,
+  body.wcag-opendyslexic {
+    font-family: 'OpenDyslexic', 'Open-Dyslexic', sans-serif !important;
+  }
+
+  /* Plain language / intellectual accessibility helper */
+  .intellectual-plain-text {
+    line-height: 1.75;
+    letter-spacing: 0.01em;
+  }
+}
+
+/* Custom subtle scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}

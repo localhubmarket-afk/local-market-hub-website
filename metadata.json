@@ -1,0 +1,6 @@
+{
+  "name": "Local Market Hub - Software for Market Operations",
+  "description": "Automate administration and improve vendor onboarding for Canadian farmers and artisan markets. Canadian data sovereignty, WCAG 2.2 AA accessibility, and $500 flat season pricing.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
