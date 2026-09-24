@@ -1,63 +1,99 @@
 import React, { useState } from 'react';
-import { Sliders, Menu, X, Globe } from 'lucide-react';
+import { Sliders, Menu, X, Globe, ShieldCheck } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 
 interface HeaderProps {
+  currentPage: 'home' | 'standards';
+  onNavigate: (page: 'home' | 'standards') => void;
   onOpenAccessibility: () => void;
   onOpenStartSeason: () => void;
   openDyslexic?: boolean;
-  onToggleAccessibility?: () => void;
 }
 
 export const Header: React.FC<HeaderProps> = ({
+  currentPage,
+  onNavigate,
   onOpenAccessibility,
   onOpenStartSeason,
   openDyslexic = false,
-  onToggleAccessibility,
 }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const { language, setLanguage, t } = useLanguage();
+  const { language, setLanguage } = useLanguage();
+  const isFr = language === 'fr';
 
-  const handleAccessibilityClick = () => {
-    if (onToggleAccessibility) {
-      onToggleAccessibility();
+  const handleNavClick = (page: 'home' | 'standards', anchor?: string) => {
+    onNavigate(page);
+    setMobileMenuOpen(false);
+    if (anchor) {
+      setTimeout(() => {
+        const el = document.querySelector(anchor);
+        if (el) {
+          el.scrollIntoView({ behavior: 'smooth' });
+        }
+      }, 100);
     } else {
-      onOpenAccessibility();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   };
 
   return (
     <header className="sticky top-0 z-40 w-full bg-white/95 backdrop-blur-sm border-b border-slate-200">
-      <div className="w-full h-16 flex items-center justify-between gap-4 pl-4 sm:pl-6 lg:pl-8 pr-6 sm:pr-10 lg:pr-14">
-        {/* Zone 1: Single text element wordmark */}
-        <a 
-          href="#" 
-          className="text-lg sm:text-xl font-bold tracking-tight text-slate-900 shrink-0 hover:text-emerald-700 transition-colors"
+      <div className="w-full h-16 flex items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
+        
+        {/* Zone 1: Logo & Brand */}
+        <button 
+          onClick={() => handleNavClick('home')}
+          className="text-lg sm:text-xl font-bold tracking-tight text-slate-900 shrink-0 hover:text-emerald-700 transition-colors text-left"
         >
-          {t.common.brandName}
-        </a>
+          <span>Local Market Hub</span>
+        </button>
 
-        {/* Zone 2: Clean text navigation links with decreased horizontal gap (desktop only, hidden on tablet landscape) */}
-        <nav className="hidden xl:flex items-center gap-4 xl:gap-5 text-sm font-medium text-slate-600">
-          <a href="#comparison" className="hover:text-slate-900 transition-colors whitespace-nowrap">
-            {t.nav.comparison}
-          </a>
-          <a href="#data-sovereignty" className="hover:text-slate-900 transition-colors whitespace-nowrap">
-            {t.nav.dataSovereignty}
-          </a>
-          <a href="#accessibility" className="hover:text-slate-900 transition-colors whitespace-nowrap">
-            {t.nav.accessibility}
-          </a>
-          <a href="#pricing" className="hover:text-slate-900 transition-colors whitespace-nowrap">
-            {t.nav.pricing}
-          </a>
+        {/* Zone 2: Navigation Links */}
+        <nav className="hidden lg:flex items-center gap-6 text-sm font-medium text-slate-600">
+          <button
+            onClick={() => handleNavClick('home')}
+            className={`transition-colors whitespace-nowrap ${
+              currentPage === 'home'
+                ? 'text-emerald-800 font-bold'
+                : 'hover:text-slate-900 text-slate-600'
+            }`}
+          >
+            {isFr ? 'Accueil & Outils' : 'Home & Time-Saving'}
+          </button>
+
+          <button
+            onClick={() => handleNavClick('home', '#vendor-management')}
+            className="hover:text-slate-900 text-slate-600 transition-colors whitespace-nowrap"
+          >
+            {isFr ? 'Gestion des Marchands' : 'Vendor Management'}
+          </button>
+
+          <button
+            onClick={() => handleNavClick('home', '#pricing')}
+            className="hover:text-slate-900 text-slate-600 transition-colors whitespace-nowrap"
+          >
+            {isFr ? 'Tarif (500 $)' : 'Pricing ($500)'}
+          </button>
+
+          <button
+            onClick={() => handleNavClick('standards')}
+            className={`inline-flex items-center gap-1.5 transition-colors whitespace-nowrap px-2.5 py-1 rounded-md ${
+              currentPage === 'standards'
+                ? 'bg-emerald-50 text-emerald-800 font-bold border border-emerald-200'
+                : 'hover:text-slate-900 text-slate-600 hover:bg-slate-50'
+            }`}
+          >
+            <ShieldCheck className="w-3.5 h-3.5 text-emerald-700" />
+            <span>{isFr ? 'Nos Standards (Sécurité & Accessibilité)' : 'Our Standards (Security & Accessibility)'}</span>
+          </button>
         </nav>
 
-        {/* Zone 3: Primary actions & Language Selector */}
+        {/* Zone 3: Actions & Settings */}
         <div className="flex items-center gap-2 sm:gap-3 shrink-0">
-          {/* Bilingual Language Switcher - hidden on mobile, visible on tablet (md: & lg:) and desktop (xl:) */}
+          
+          {/* Language Switcher */}
           <div 
-            className="hidden md:flex items-center bg-slate-100 p-0.5 rounded-lg border border-slate-200"
+            className="flex items-center bg-slate-100 p-0.5 rounded-lg border border-slate-200"
             role="group"
             aria-label="Language selector"
           >
@@ -70,7 +106,6 @@ export const Header: React.FC<HeaderProps> = ({
                   : 'text-slate-500 hover:text-slate-900'
               }`}
               title="English"
-              aria-pressed={language === 'en'}
             >
               EN
             </button>
@@ -83,131 +118,91 @@ export const Header: React.FC<HeaderProps> = ({
                   : 'text-slate-500 hover:text-slate-900'
               }`}
               title="Français"
-              aria-pressed={language === 'fr'}
             >
               FR
             </button>
           </div>
 
-          {/* Accessibility Button - permanently placed on the main header, next to hamburger on mobile and tablet */}
-          <div className="flex items-center gap-1">
-            <button
-              onClick={onOpenAccessibility}
-              type="button"
-              aria-pressed={openDyslexic}
-              className={`inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 sm:py-2 text-xs font-semibold rounded-lg transition-colors whitespace-nowrap ${
-                openDyslexic
-                  ? 'bg-emerald-800 text-white shadow-xs hover:bg-emerald-900'
-                  : 'text-slate-700 bg-slate-100 hover:bg-slate-200'
-              }`}
-              title={t.common.accessibilitySettings}
-            >
-              <Sliders className={`w-3.5 h-3.5 ${openDyslexic ? 'text-white' : 'text-emerald-700'}`} aria-hidden="true" />
-              <span>{t.common.accessibilityCta}</span>
-              {openDyslexic && (
-                <span className="text-[10px] font-bold bg-emerald-600 text-white px-1 py-0.5 rounded leading-none">
-                  ON
-                </span>
-              )}
-            </button>
-          </div>
+          {/* Accessibility Drawer Toggle */}
+          <button
+            onClick={onOpenAccessibility}
+            type="button"
+            className={`inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 sm:py-2 text-xs font-semibold rounded-lg transition-colors whitespace-nowrap ${
+              openDyslexic
+                ? 'bg-emerald-800 text-white shadow-xs'
+                : 'text-slate-700 bg-slate-100 hover:bg-slate-200'
+            }`}
+            title="Accessibility settings"
+          >
+            <Sliders className="w-3.5 h-3.5 text-emerald-700" />
+            <span className="hidden sm:inline">{isFr ? 'Accessibilité' : 'Accessibility'}</span>
+          </button>
 
-          {/* Start Your Full Season ($500) Button - hidden on mobile and tablet, available on desktop (xl:) and in hamburger menu */}
+          {/* Start Season Button */}
           <button
             onClick={onOpenStartSeason}
             type="button"
-            className="hidden xl:inline-flex items-center px-3.5 sm:px-4 py-2 text-xs sm:text-sm font-semibold text-white bg-emerald-700 hover:bg-emerald-800 rounded-lg transition-colors whitespace-nowrap shadow-sm active:scale-98"
+            className="hidden sm:inline-flex items-center px-4 py-2 text-xs sm:text-sm font-bold text-white bg-emerald-700 hover:bg-emerald-800 rounded-lg transition-colors whitespace-nowrap shadow-xs active:scale-98"
           >
-            {t.common.startSeasonCta}
+            {isFr ? 'Lancer votre saison (500 $)' : 'Start Season ($500)'}
           </button>
 
-          {/* Hamburger menu toggle (mobile, tablet portrait, and tablet landscape) */}
+          {/* Hamburger Menu Toggle (Mobile & Tablet) */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             aria-label="Toggle navigation menu"
-            aria-expanded={mobileMenuOpen}
-            className="xl:hidden p-2 text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-lg transition-colors"
+            className="lg:hidden p-2 text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-lg transition-colors"
           >
             {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
           </button>
         </div>
+
       </div>
 
-      {/* Mobile & Tablet nav dropdown */}
+      {/* Mobile Menu Dropdown */}
       {mobileMenuOpen && (
-        <div className="xl:hidden border-b border-slate-200 bg-white px-4 sm:px-6 pt-2 pb-6 space-y-3">
-          <div className="flex items-center justify-between pb-2 border-b border-slate-100">
-            <span className="text-xs font-medium text-slate-500 flex items-center gap-1.5">
-              <Globe className="w-3.5 h-3.5 text-slate-400" />
-              <span>{language === 'fr' ? 'Langue / Language' : 'Language / Langue'}</span>
-            </span>
-            <div className="flex items-center bg-slate-100 p-0.5 rounded-lg border border-slate-200">
-              <button
-                type="button"
-                onClick={() => setLanguage('en')}
-                className={`px-3 py-1 text-xs font-bold rounded-md transition-all ${
-                  language === 'en'
-                    ? 'bg-white text-emerald-800 shadow-xs'
-                    : 'text-slate-500 hover:text-slate-900'
-                }`}
-              >
-                English
-              </button>
-              <button
-                type="button"
-                onClick={() => setLanguage('fr')}
-                className={`px-3 py-1 text-xs font-bold rounded-md transition-all ${
-                  language === 'fr'
-                    ? 'bg-white text-emerald-800 shadow-xs'
-                    : 'text-slate-500 hover:text-slate-900'
-                }`}
-              >
-                Français
-              </button>
-            </div>
-          </div>
-
+        <div className="lg:hidden border-b border-slate-200 bg-white px-4 pt-3 pb-6 space-y-3 shadow-lg">
           <nav className="flex flex-col space-y-2 text-sm font-medium text-slate-700">
-            <a 
-              href="#comparison" 
-              onClick={() => setMobileMenuOpen(false)}
-              className="py-1.5 hover:text-emerald-700"
+            <button 
+              onClick={() => handleNavClick('home')}
+              className={`text-left py-2 px-3 rounded-lg ${currentPage === 'home' ? 'bg-emerald-50 text-emerald-800 font-bold' : 'hover:bg-slate-50'}`}
             >
-              {t.nav.comparison}
-            </a>
-            <a 
-              href="#data-sovereignty" 
-              onClick={() => setMobileMenuOpen(false)}
-              className="py-1.5 hover:text-emerald-700"
+              {isFr ? 'Accueil & Outils' : 'Home & Time-Saving'}
+            </button>
+
+            <button 
+              onClick={() => handleNavClick('home', '#vendor-management')}
+              className="text-left py-2 px-3 rounded-lg hover:bg-slate-50"
             >
-              {t.nav.dataSovereignty}
-            </a>
-            <a 
-              href="#accessibility" 
-              onClick={() => setMobileMenuOpen(false)}
-              className="py-1.5 hover:text-emerald-700"
+              {isFr ? 'Gestion des Marchands' : 'Vendor Management'}
+            </button>
+
+            <button 
+              onClick={() => handleNavClick('home', '#pricing')}
+              className="text-left py-2 px-3 rounded-lg hover:bg-slate-50"
             >
-              {t.nav.accessibility}
-            </a>
-            <a 
-              href="#pricing" 
-              onClick={() => setMobileMenuOpen(false)}
-              className="py-1.5 hover:text-emerald-700"
+              {isFr ? 'Tarif (500 $)' : 'Pricing ($500)'}
+            </button>
+
+            <button 
+              onClick={() => handleNavClick('standards')}
+              className={`text-left py-2 px-3 rounded-lg flex items-center gap-2 ${currentPage === 'standards' ? 'bg-emerald-50 text-emerald-800 font-bold' : 'hover:bg-slate-50'}`}
             >
-              {t.nav.pricing}
-            </a>
+              <ShieldCheck className="w-4 h-4 text-emerald-600" />
+              <span>{isFr ? 'Nos Standards (Sécurité & Accessibilité)' : 'Our Standards (Security & Accessibility)'}</span>
+            </button>
           </nav>
-          {/* Primary Action Button in Mobile Dropdown */}
-          <div className="pt-2 border-t border-slate-100">
+
+          <div className="pt-3 border-t border-slate-100">
             <button
               onClick={() => {
                 setMobileMenuOpen(false);
                 onOpenStartSeason();
               }}
               type="button"
-              className="w-full py-3 px-4 text-center font-bold text-sm text-white bg-emerald-700 hover:bg-emerald-800 rounded-xl transition-colors shadow-sm active:scale-98"
+              className="w-full py-3 px-4 text-center font-bold text-sm text-white bg-emerald-700 hover:bg-emerald-800 rounded-xl transition-colors shadow-sm"
             >
-              {t.common.startSeasonCta}
+              {isFr ? 'Lancer votre saison (500 $)' : 'Start Season ($500)'}
             </button>
           </div>
         </div>

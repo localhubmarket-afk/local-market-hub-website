@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { ArrowRight, Check, Calculator, HeartHandshake } from 'lucide-react';
+import React from 'react';
+import { ArrowRight, Check } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 
 interface PricingSectionProps {
@@ -9,230 +9,95 @@ interface PricingSectionProps {
 
 export const PricingSection: React.FC<PricingSectionProps> = ({
   onOpenStartSeason,
-  intellectualMode,
 }) => {
-  const [vendorCount, setVendorCount] = useState<number>(45);
-  const [weeksCount, setWeeksCount] = useState<number>(20);
-  const [avgBoothFee, setAvgBoothFee] = useState<number>(40);
-  const { language, t } = useLanguage();
+  const { language } = useLanguage();
+  const isFr = language === 'fr';
 
-  // Competitor take calculation (typically 3.5% + payment fees or 5% cut)
-  const totalSeasonStallVolume = vendorCount * weeksCount * avgBoothFee;
-  const competitorTakeRate = 0.04; // 4% average platform cut
-  const competitorFee = totalSeasonStallVolume * competitorTakeRate;
-  const localMarketHubFee = 500;
-  const savings = Math.max(0, competitorFee - localMarketHubFee);
+  const benefits = isFr
+    ? [
+        'Nombre illimité de marchands et d’inscriptions',
+        'Plan de table interactif avec glisser-déposer',
+        'Rappels et consignes d’arrivée automatiques',
+        'Pointage rapide sur téléphone le matin du marché',
+        'Répertoire public pour attirer les clients locaux',
+        'Assistance humaine par téléphone et courriel',
+        'Aucun pourcentage prélevé sur vos marchands',
+      ]
+    : [
+        'Unlimited vendor applications and waitlists',
+        'Visual drag-and-drop stall map builder',
+        'Automated vendor reminders and arrival instructions',
+        'Quick morning check-in on any phone or tablet',
+        'Live public directory to showcase vendors to shoppers',
+        'Friendly support whenever you have a question',
+        'Zero commission or per-vendor percentage cuts',
+      ];
 
   return (
-    <section id="pricing" className="py-16 lg:py-24 bg-white border-b border-slate-200">
+    <section id="pricing" className="py-16 lg:py-24 bg-slate-50 border-b border-slate-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
         {/* Section Header */}
-        <div className="max-w-3xl">
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight text-balance">
-            {t.pricing.title}
+        <div className="max-w-3xl mx-auto text-center">
+          <span className="text-xs font-bold uppercase tracking-wider text-emerald-800 bg-emerald-100/60 px-3 py-1 rounded-full">
+            {isFr ? 'Tarif Simple & Transparent' : 'Simple & Transparent Pricing'}
+          </span>
+          <h2 className="mt-3 text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
+            {isFr ? 'Un prix fixe pour toute votre saison' : 'One flat price for your entire season'}
           </h2>
+          <p className="mt-3 text-base sm:text-lg text-slate-600">
+            {isFr
+              ? 'Pas de frais cachés. Pas de pourcentage sur vos ventes. Juste 500 $ pour toute l’année.'
+              : 'No hidden fees. No percentage cuts from your vendors. Just $500 for the whole season.'}
+          </p>
         </div>
 
-        {/* Narrative Copy Box */}
-        <div className="mt-6 p-6 sm:p-8 rounded-2xl bg-slate-50 border border-slate-200 max-w-4xl space-y-4">
-          <p className="text-xl sm:text-2xl font-bold text-slate-900 leading-snug">
-            {t.pricing.bannerTitle}
-          </p>
-          <p className="text-base sm:text-lg text-slate-700 leading-relaxed">
-            {t.pricing.bannerDesc}
-          </p>
-
-          {intellectualMode && (
-            <div className="mt-4 pt-4 border-t border-slate-200 text-sm text-slate-800 space-y-2">
-              <span className="font-bold text-emerald-800 block">{t.pricing.whyMattersTitle}</span>
-              <p className="leading-relaxed">
-                {t.pricing.whyMattersDesc}
-              </p>
-            </div>
-          )}
-        </div>
-
-        {/* Pricing Card & Interactive Seasonal Savings Calculator */}
-        <div className="mt-12 grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
-          {/* The $500 Full Season Package Card */}
-          <div className="lg:col-span-5 p-8 rounded-2xl bg-slate-900 text-slate-100 flex flex-col justify-between shadow-xl border border-slate-800">
-            <div>
-              <div className="flex items-center justify-between">
-                <span className="text-xs font-mono uppercase tracking-wider text-emerald-400">
-                  {t.pricing.packageBadge}
-                </span>
-                <span className="text-xs text-slate-400">{t.pricing.packageDuration}</span>
-              </div>
-
-              <div className="mt-6 flex items-baseline gap-2">
-                <span className="text-5xl sm:text-6xl font-black text-white font-mono tabular-nums">
-                  {t.pricing.priceAmount}
-                </span>
-                <span className="text-slate-400 text-sm">{t.pricing.priceCad}</span>
-              </div>
-
-              <p className="mt-3 text-xs sm:text-sm text-slate-300">
-                {language === 'fr'
-                  ? 'Zéro frais en pourcentage. Zéro commission par exposant. Suite logicielle complète pour l’ensemble de votre saison.'
-                  : 'Zero percentage fees. Zero per-vendor surcharges. Complete software operations suite for your entire season.'}
-              </p>
-
-              <div className="mt-8 pt-6 border-t border-slate-800 space-y-3 text-xs sm:text-sm text-slate-200">
-                {t.pricing.features.map((feat, idx) => (
-                  <div key={idx} className="flex items-center gap-2.5">
-                    <Check className="w-4 h-4 text-emerald-400 shrink-0" />
-                    <span>{feat}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <div className="mt-8 pt-6 border-t border-slate-800">
-              <button
-                type="button"
-                onClick={onOpenStartSeason}
-                className="w-full py-4 px-6 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-sm tracking-wide transition-colors flex items-center justify-center gap-2 group active:scale-98"
-              >
-                <span>{t.pricing.ctaCard}</span>
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-              </button>
-              <span className="block text-center text-[11px] text-slate-400 mt-2">
-                {language === 'fr'
-                  ? 'Factures payables par TEF, virement Interac ou carte de crédit canadienne'
-                  : 'Invoices payable via EFT, Interac e-Transfer, or Canadian Credit Card'}
+        {/* The Single Transparent Card */}
+        <div className="mt-12 max-w-xl mx-auto bg-white rounded-3xl border border-slate-200 shadow-lg p-8 sm:p-10">
+          <div className="text-center pb-6 border-b border-slate-100">
+            <span className="text-xs font-bold uppercase tracking-wider text-emerald-800 bg-emerald-50 px-3 py-1 rounded-full">
+              {isFr ? 'Forfait Saison Complète' : 'Full Season Package'}
+            </span>
+            <div className="mt-4 flex items-baseline justify-center gap-1">
+              <span className="text-5xl sm:text-6xl font-extrabold text-slate-900">500 $</span>
+              <span className="text-sm font-semibold text-slate-500">
+                {isFr ? '/ saison complète' : 'CAD / full season'}
               </span>
             </div>
+            <p className="mt-2 text-xs text-slate-500">
+              {isFr ? 'Tout inclus · Sans frais mensuels' : 'Everything included · No monthly surprise charges'}
+            </p>
           </div>
 
-          {/* Interactive Savings Calculator */}
-          <div className="lg:col-span-7 p-8 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col justify-between">
-            <div>
-              <div className="flex items-center justify-between pb-4 border-b border-slate-200">
-                <div className="flex items-center gap-2">
-                  <Calculator className="w-5 h-5 text-emerald-700" />
-                  <h3 className="font-bold text-base text-slate-900">
-                    {t.pricing.calcTitle}
-                  </h3>
+          {/* Benefit Checkmarks */}
+          <div className="py-8 space-y-3.5">
+            {benefits.map((b, i) => (
+              <div key={i} className="flex items-start gap-3 text-sm text-slate-700">
+                <div className="w-5 h-5 rounded-full bg-emerald-100 text-emerald-800 flex items-center justify-center shrink-0 mt-0.5">
+                  <Check className="w-3.5 h-3.5 stroke-[3]" />
                 </div>
-                <span className="text-xs font-mono text-slate-500">
-                  {language === 'fr' ? 'Fixe vs % de prélèvement' : 'Compare Flat vs % Cuts'}
-                </span>
+                <span>{b}</span>
               </div>
-
-              <p className="mt-4 text-xs text-slate-600 leading-relaxed">
-                {t.pricing.calcSubtitle}
-              </p>
-
-              <div className="mt-6 space-y-5">
-                {/* Sliders */}
-                <div>
-                  <div className="flex justify-between text-xs font-semibold text-slate-800 mb-1.5">
-                    <span>{t.pricing.vendorSlider}</span>
-                    <span className="font-mono text-emerald-800 font-bold">
-                      {vendorCount} {language === 'fr' ? 'exposants' : 'vendors'}
-                    </span>
-                  </div>
-                  <input
-                    type="range"
-                    min="10"
-                    max="150"
-                    value={vendorCount}
-                    onChange={(e) => setVendorCount(parseInt(e.target.value))}
-                    className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-emerald-700"
-                  />
-                </div>
-
-                <div>
-                  <div className="flex justify-between text-xs font-semibold text-slate-800 mb-1.5">
-                    <span>{t.pricing.weeksSlider}</span>
-                    <span className="font-mono text-emerald-800 font-bold">
-                      {weeksCount} {language === 'fr' ? 'semaines' : 'weeks'}
-                    </span>
-                  </div>
-                  <input
-                    type="range"
-                    min="4"
-                    max="52"
-                    value={weeksCount}
-                    onChange={(e) => setWeeksCount(parseInt(e.target.value))}
-                    className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-emerald-700"
-                  />
-                </div>
-
-                <div>
-                  <div className="flex justify-between text-xs font-semibold text-slate-800 mb-1.5">
-                    <span>{t.pricing.feeSlider}</span>
-                    <span className="font-mono text-emerald-800 font-bold">
-                      {avgBoothFee} $ / {language === 'fr' ? 'sem.' : 'week'}
-                    </span>
-                  </div>
-                  <input
-                    type="range"
-                    min="15"
-                    max="120"
-                    step="5"
-                    value={avgBoothFee}
-                    onChange={(e) => setAvgBoothFee(parseInt(e.target.value))}
-                    className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-emerald-700"
-                  />
-                </div>
-              </div>
-            </div>
-
-            {/* Total Comparison Output */}
-            <div className="mt-8 p-4 rounded-xl bg-white border border-slate-200 space-y-3">
-              <div className="flex justify-between items-center text-xs">
-                <span className="text-slate-600">{t.pricing.stallVolumeLabel}</span>
-                <span className="font-mono font-bold text-slate-900">
-                  {totalSeasonStallVolume.toLocaleString(language === 'fr' ? 'fr-CA' : 'en-CA')} $ CAD
-                </span>
-              </div>
-              <div className="flex justify-between items-center text-xs">
-                <span className="text-slate-600">{t.pricing.competitorCutLabel}</span>
-                <span className="font-mono font-bold text-rose-600">
-                  -{competitorFee.toLocaleString(language === 'fr' ? 'fr-CA' : 'en-CA', { maximumFractionDigits: 0 })} $ CAD
-                </span>
-              </div>
-              <div className="flex justify-between items-center text-xs pt-2 border-t border-slate-100">
-                <span className="font-semibold text-slate-900">{t.pricing.lmhFlatLabel}</span>
-                <span className="font-mono font-bold text-emerald-700">500 $ CAD</span>
-              </div>
-              <div className="p-3 bg-emerald-50 rounded-lg border border-emerald-200 flex items-center justify-between">
-                <span className="text-xs font-bold text-emerald-950">{t.pricing.savingsNetLabel}</span>
-                <span className="text-lg font-black font-mono text-emerald-800 tabular-nums">
-                  +{savings.toLocaleString(language === 'fr' ? 'fr-CA' : 'en-CA', { maximumFractionDigits: 0 })} $ CAD
-                </span>
-              </div>
-            </div>
+            ))}
           </div>
+
+          {/* CTA */}
+          <button
+            onClick={onOpenStartSeason}
+            type="button"
+            className="w-full py-4 px-6 text-sm sm:text-base font-bold text-white bg-emerald-700 hover:bg-emerald-800 rounded-xl transition-all shadow-md flex items-center justify-center gap-2 group active:scale-98"
+          >
+            <span>{isFr ? 'Lancer votre saison maintenant' : 'Start Your Season Today'}</span>
+            <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+          </button>
+
+          <p className="mt-4 text-center text-xs text-slate-400">
+            {isFr 
+              ? 'Configuration rapide en 5 minutes. Vos marchands peuvent postuler dès aujourd’hui.' 
+              : 'Quick 5-minute setup. Your vendors can start applying today.'}
+          </p>
         </div>
 
-        {/* Community Accessibility Partnerships Callout */}
-        <div className="mt-12 p-6 sm:p-8 rounded-2xl bg-emerald-50/70 border border-emerald-200 shadow-xs flex flex-col items-start gap-5 sm:gap-6">
-          <div className="flex items-start gap-4 w-full">
-            <div className="p-3 rounded-xl bg-white text-emerald-700 border border-emerald-200 shrink-0 shadow-xs">
-              <HeartHandshake className="w-6 h-6" aria-hidden="true" />
-            </div>
-            <div className="w-full">
-              <h3 className="text-lg sm:text-xl font-bold text-slate-900 tracking-tight">
-                {t.pricing.partnershipsTitle}
-              </h3>
-              <p className="mt-2 text-sm sm:text-base text-slate-700 leading-relaxed font-normal w-full">
-                {t.pricing.partnershipsDesc}
-              </p>
-
-              <div className="mt-4 sm:mt-5 flex justify-start">
-                <a
-                  href="mailto:francois@localmarkethub.ca"
-                  className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-emerald-700 hover:bg-emerald-600 text-white font-bold text-xs sm:text-sm tracking-wide transition-colors shadow-xs"
-                >
-                  <span>{t.pricing.partnershipsCta}</span>
-                  <ArrowRight className="w-4 h-4" />
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
     </section>
   );

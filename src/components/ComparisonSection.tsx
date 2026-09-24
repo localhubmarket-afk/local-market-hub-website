@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Check, X, DollarSign, Database, ShieldCheck, Compass, Award, ChevronDown, ChevronUp } from 'lucide-react';
+import React from 'react';
+import { Check, X, Clock, FileSpreadsheet, Sparkles, ArrowRight } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 
 interface ComparisonSectionProps {
@@ -7,131 +7,157 @@ interface ComparisonSectionProps {
   intellectualMode: boolean;
 }
 
-const FEATURE_ICONS = [DollarSign, Compass, Database, ShieldCheck, Award];
-
 export const ComparisonSection: React.FC<ComparisonSectionProps> = ({
   onOpenStartSeason,
-  intellectualMode,
 }) => {
-  const [expandedRow, setExpandedRow] = useState<number | null>(null);
-  const { language, t } = useLanguage();
+  const { language } = useLanguage();
+  const isFr = language === 'fr';
+
+  const rows = [
+    {
+      task: isFr ? 'Inscriptions des marchands' : 'Vendor Applications',
+      oldWay: isFr
+        ? 'Courriels éparpillés, pièces jointes manquantes et relances manuelles.'
+        : 'Lost PDF attachments, buried emails, and missing vendor info.',
+      newWay: isFr
+        ? 'Un seul lien en ligne. Les marchands envoient photos et permis en 3 minutes.'
+        : 'One simple link. Vendors submit photos, permits, and power needs all at once.',
+    },
+    {
+      task: isFr ? 'Plan de table et kiosques' : 'Stall & Map Planning',
+      oldWay: isFr
+        ? 'Dessiner le plan à la main chaque vendredi soir sur du papier.'
+        : 'Re-drawing paper maps and editing spreadsheets every Friday night.',
+      newWay: isFr
+        ? 'Plan visuel glisser-déposer. Attribution des places en quelques clics.'
+        : 'Visual drag-and-drop map. Assign booths and view openings in seconds.',
+    },
+    {
+      task: isFr ? 'Rappels et consignes' : 'Vendor Communication',
+      oldWay: isFr
+        ? 'Copier-coller 40 adresses courriel une par une en espérant ne rien oublier.'
+        : 'Copying 40 emails into a message and answering the same questions repeatedly.',
+      newWay: isFr
+        ? 'Envoi groupé en un clic. Heures d’arrivée et numéros de kiosque transmis instantanément.'
+        : 'One-click group updates. Arrival times and stall numbers sent instantly.',
+    },
+    {
+      task: isFr ? 'Arrivée le jour du marché' : 'Market Morning Check-in',
+      oldWay: isFr
+        ? 'Chercher sur une planchette à pince sous la pluie pendant que les camions attendent.'
+        : 'Flipping through paper clipboards at the gate while trucks line up.',
+      newWay: isFr
+        ? 'Cocher les présences sur votre téléphone en 5 secondes.'
+        : 'Tap once on your phone to check vendors in as they pull up.',
+    },
+    {
+      task: isFr ? 'Répertoire pour le public' : 'Shopper Directory',
+      oldWay: isFr
+        ? 'Recopier la liste sur les réseaux sociaux ou imprimer des feuilles.'
+        : 'Manually typing vendor lists into Facebook posts or paper flyers.',
+      newWay: isFr
+        ? 'Page web automatique montrant aux visiteurs qui est présent cette fin de semaine.'
+        : 'Live public page showing visitors exactly which vendors are attending this week.',
+    },
+    {
+      task: isFr ? 'Temps passé par semaine' : 'Weekly Time Spent',
+      oldWay: isFr
+        ? '10 à 15 heures de travail administratif répétitif.'
+        : '10 to 15 hours of stressful paperwork and administrative chasing.',
+      newWay: isFr
+        ? 'Moins de 2 heures par semaine. Tout reste ordonné tout seul.'
+        : 'Under 2 hours a week. Everything stays organized automatically.',
+    },
+  ];
 
   return (
     <section id="comparison" className="py-16 lg:py-24 bg-slate-50 border-b border-slate-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="max-w-3xl mx-auto text-center">
+          <div className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-emerald-800 bg-emerald-100/60 px-3 py-1 rounded-full mb-3">
+            <Clock className="w-3.5 h-3.5" />
+            <span>{isFr ? 'Gagnez du temps chaque semaine' : 'Save Real Time Every Week'}</span>
+          </div>
           <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
-            {t.comparison.title}
+            {isFr ? 'Dites adieu au casse-tête des feuilles de calcul' : 'Say goodbye to spreadsheet chaos'}
           </h2>
           <p className="mt-4 text-base sm:text-lg text-slate-600">
-            {intellectualMode ? t.comparison.subtitlePlain : t.comparison.subtitleStandard}
+            {isFr
+              ? 'Voyez la différence concrète entre la gestion manuelle et notre logiciel pensé pour les organisateurs.'
+              : 'See the difference between manual spreadsheet scrambling and a simple, organized market season.'}
           </p>
         </div>
 
-        {/* The Exact Comparison Table */}
+        {/* Comparison Table */}
         <div className="mt-12 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse">
               <thead>
-                <tr className="border-b border-slate-200 bg-slate-100/75">
-                  <th scope="col" className="py-4 px-6 text-sm font-bold text-slate-900 w-1/3">
-                    {t.comparison.thFeature}
+                <tr className="border-b border-slate-200 bg-slate-100/80">
+                  <th scope="col" className="py-4 px-6 text-xs sm:text-sm font-bold text-slate-900 w-1/4">
+                    {isFr ? 'Tâche' : 'Market Task'}
                   </th>
-                  <th scope="col" className="py-4 px-6 text-sm font-semibold text-rose-950/80 bg-rose-50/50 w-1/3">
-                    {t.comparison.thOther}
+                  <th scope="col" className="py-4 px-6 text-xs sm:text-sm font-bold text-rose-950 bg-rose-50/70 w-3/8">
+                    <div className="flex items-center gap-1.5">
+                      <FileSpreadsheet className="w-4 h-4 text-rose-600 shrink-0" />
+                      <span>{isFr ? 'Feuilles Excel & Courriels' : 'Spreadsheets & Manual Emails'}</span>
+                    </div>
                   </th>
-                  <th scope="col" className="py-4 px-6 text-sm font-bold text-emerald-950 bg-emerald-50/70 w-1/3">
-                    {t.comparison.thLmh}
+                  <th scope="col" className="py-4 px-6 text-xs sm:text-sm font-bold text-emerald-950 bg-emerald-50/80 w-3/8">
+                    <div className="flex items-center gap-1.5">
+                      <Sparkles className="w-4 h-4 text-emerald-600 shrink-0" />
+                      <span>{isFr ? 'Local Market Hub' : 'Local Market Hub'}</span>
+                    </div>
                   </th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100 text-sm">
-                {t.comparison.features.map((item, idx) => {
-                  const Icon = FEATURE_ICONS[idx % FEATURE_ICONS.length];
-                  const isExpanded = expandedRow === idx;
-
-                  return (
-                    <React.Fragment key={item.feature}>
-                      <tr
-                        onClick={() => setExpandedRow(isExpanded ? null : idx)}
-                        className="cursor-pointer hover:bg-slate-50/80 transition-colors group"
-                      >
-                        {/* Feature column */}
-                        <td className="py-4 px-6 font-semibold text-slate-900">
-                          <div className="flex items-center justify-between">
-                            <div className="flex items-center gap-2.5">
-                              <Icon className="w-4 h-4 text-slate-500 group-hover:text-emerald-700 transition-colors" />
-                              <span>{item.feature}</span>
-                            </div>
-                            <span className="text-xs text-slate-400 group-hover:text-slate-600 hidden sm:inline">
-                              {isExpanded ? (
-                                <ChevronUp className="w-4 h-4" />
-                              ) : (
-                                <ChevronDown className="w-4 h-4" />
-                              )}
-                            </span>
-                          </div>
-                        </td>
-
-                        {/* Other Platforms column */}
-                        <td className="py-4 px-6 text-slate-600 bg-rose-50/25">
-                          <div className="flex items-center gap-2">
-                            <X className="w-4 h-4 text-rose-500 shrink-0" aria-hidden="true" />
-                            <span className="font-normal text-slate-700">{item.other}</span>
-                          </div>
-                        </td>
-
-                        {/* Local Market Hub column */}
-                        <td className="py-4 px-6 text-slate-900 bg-emerald-50/40 font-semibold">
-                          <div className="flex items-center gap-2">
-                            <Check className="w-4 h-4 text-emerald-600 shrink-0" aria-hidden="true" />
-                            <span className="text-emerald-950 font-bold">{item.localMarketHub}</span>
-                          </div>
-                        </td>
-                      </tr>
-
-                      {/* Expandable detail row */}
-                      {isExpanded && (
-                        <tr className="bg-slate-50/90 border-t border-slate-100">
-                          <td colSpan={3} className="px-6 py-4">
-                            <div className="text-xs sm:text-sm text-slate-700 space-y-2">
-                              <div className="font-semibold text-slate-900 flex items-center gap-2">
-                                <span>
-                                  {language === 'fr'
-                                    ? `Analyse opérationnelle · ${item.feature}`
-                                    : `Operational Breakdown · ${item.feature}`}
-                                </span>
-                              </div>
-                              <p className="leading-relaxed">
-                                {intellectualMode ? item.plainLanguage : item.explanation}
-                              </p>
-                            </div>
-                          </td>
-                        </tr>
-                      )}
-                    </React.Fragment>
-                  );
-                })}
+              <tbody className="divide-y divide-slate-100 text-xs sm:text-sm">
+                {rows.map((row, idx) => (
+                  <tr key={idx} className="hover:bg-slate-50/60 transition-colors">
+                    <td className="py-4 px-6 font-bold text-slate-900">
+                      {row.task}
+                    </td>
+                    <td className="py-4 px-6 text-slate-600 bg-rose-50/20">
+                      <div className="flex items-start gap-2">
+                        <X className="w-4 h-4 text-rose-500 shrink-0 mt-0.5" />
+                        <span>{row.oldWay}</span>
+                      </div>
+                    </td>
+                    <td className="py-4 px-6 text-slate-900 font-medium bg-emerald-50/30">
+                      <div className="flex items-start gap-2">
+                        <Check className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
+                        <span>{row.newWay}</span>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>
-
-          <div className="p-4 bg-slate-50 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-600">
-            <span>
-              {language === 'fr'
-                ? 'Cliquez sur une ligne pour voir le détail. Conçu pour les directeurs de marchés, OBNL et coordonnateurs de SDC canadiens.'
-                : 'Click any row for operational breakdown. Built for Canadian market directors, non-profits, and BIA coordinators.'}
-            </span>
-            <button
-              onClick={onOpenStartSeason}
-              className="text-xs font-semibold text-emerald-800 hover:text-emerald-900 underline underline-offset-2 shrink-0"
-            >
-              {language === 'fr'
-                ? 'Réserver votre saison complète à 500 $ →'
-                : 'Lock in $500 full season rate →'}
-            </button>
-          </div>
         </div>
+
+        {/* Callout box */}
+        <div className="mt-8 p-6 rounded-2xl bg-white border border-emerald-200 shadow-xs flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div>
+            <h3 className="font-bold text-slate-900 text-base">
+              {isFr ? 'Prêt à récupérer vos soirées de semaine ?' : 'Ready to reclaim your weekday evenings?'}
+            </h3>
+            <p className="text-xs sm:text-sm text-slate-600 mt-1">
+              {isFr
+                ? 'Créez votre marché dès aujourd’hui pour seulement 500 $ pour toute la saison.'
+                : 'Set up your market today for just $500 for your entire season. No monthly surprises.'}
+            </p>
+          </div>
+          <button
+            onClick={onOpenStartSeason}
+            type="button"
+            className="w-full sm:w-auto px-6 py-3 text-xs sm:text-sm font-bold text-white bg-emerald-700 hover:bg-emerald-800 rounded-xl transition-all shadow-sm flex items-center justify-center gap-2 shrink-0"
+          >
+            <span>{isFr ? 'Commencer maintenant' : 'Get Started Now'}</span>
+            <ArrowRight className="w-4 h-4" />
+          </button>
+        </div>
+
       </div>
     </section>
   );
