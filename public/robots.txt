@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://localmarkethub.ca/sitemap.xml
